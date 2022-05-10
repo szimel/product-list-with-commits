@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 mongoose.connect("mongodb://localhost/products", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+})
+.catch((err) => console.log(err.message))
 
 const app = express();
 
