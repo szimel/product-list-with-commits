@@ -20,14 +20,40 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 router.get("/products", (req, res, next) => {
-  let {category, price, query} = req.query;
-  const perPage = 9;
-  console.log(req.params);
+  const query = req.query.query || null;
+  const category = req.query.category || null;
+  const price = req.query.price || null;
 
-  // return the first page by default
   const page = req.query.page || 1;
+  const perPage = 9;
 
-  Product.find({})
+  let findObj = {};
+  findObj.searches = {};
+  findObj.pricing = {};
+
+  //formatting searches
+  if(query) {
+    let sortedQuery = query[0].toUpperCase() + query.substring(1)
+    findObj.searches.name = {"$regex": sortedQuery};
+  };
+
+  //formatting categories
+  if(category) {
+    let sortedCategory = category[0].toUpperCase() + category.substring(1)
+    findObj.searches.category = sortedCategory;
+  };
+
+  //formatting price
+  if(price) {
+    if (price.toLowerCase() === 'highest') {
+      findObj.pricing.price = -1;
+    } else {
+      findObj.pricing.price = 1;
+    }
+  };
+
+  Product.find(findObj.searches)
+    .sort(findObj.pricing)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -128,27 +154,25 @@ router.delete("/products/:product", (req, res, next) => {
     })
 })
 
-// deletes a product's review
+// deletes a product's review * couldn't figure out how to update the products reviews 
 router.delete("/products/:product/reviews/:review", (req, res, next) => {
-  let {product} = req.params
-  let {review} = req.params
+  let {product, review} = req.params
 
   Product.findOne({_id: product})
     .exec((err, product) => {
       if(err) {
         console.log(err)
       };
-      Review.remove({_id: review})
+      Review.deleteOne({_id: review})
         .exec((err, review) => {
           if (err) {
             console.log(err);
           };
           console.log("Review Deleted");
-          res.end();
+          // res.end();
         })
       res.send(product);
     });
 });
-
 
 module.exports = router;
