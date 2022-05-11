@@ -7,9 +7,8 @@ export const DUMMY = 'DUMMY';
 
 export function productSearch(price, search, category, page) {
   const url = `${ROOT_URL}price=${price}&query=${search}&category=${category}&page=${page}`
-  const request = axios.get(`${ROOT_URL}?price=${price}&query=${search}&categroy=${category}&page=${page}`);
   console.log(url);
-  debugger;
+  const request = axios.get(`${ROOT_URL}?price=${price}&query=${search}&category=${category}&page=${page}`);
   return {
     type: PRODUCTS,
     payload: request

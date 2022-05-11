@@ -1,8 +1,17 @@
 import { Card, Row, Col, Container } from "react-bootstrap"
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { productSearch } from "../actions";
+import React, {useEffect} from "react";
+
 
 
 const Products = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(productSearch("","",""));
+  }, [dispatch] )
+
   let products = useSelector((state) => state.products)
   console.log(products);
   let data = [];
@@ -13,14 +22,14 @@ const Products = () => {
     } else {
       for (let i = 0; i < products.length; i++) {
         data.push (
-          <Card style={{ width: '21rem', height: 'auto' }} className='m-3'>
+          <Card style={{ width: '21rem', height: 'auto' }} className='m-3' key={i}>
             <Card.Body >
                 <Row>
-                  <Col>
-                  <p className="font-weight-light">Category = {products[i].category}</p>
+                  <Col xs={5}>
+                  <p className="font-weight-light">Category = <strong>{products[i].category}</strong></p>
                   </Col>
                   <Col>
-                  <p className="font-weight-bold">${products[i].price}</p>
+                  <p className="text-end">${products[i].price}</p>
                   </Col>
                 </Row>
                 <Row>
