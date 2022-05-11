@@ -1,14 +1,14 @@
 import React from "react";
-import Header from "components/header"
-import Products from "components/products"
+import Header from "./components/header"
+import "bootstrap/dist/css/bootstrap.css";
+// import Products from "./components/products"
 
 
 function App() {
   return (
-    <React.Fragment>
+    <div>
       <Header />
-      {/* <Products /> */}
-    </React.Fragment>
+    </div>
   )
 }
 
