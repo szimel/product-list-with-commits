@@ -39,6 +39,7 @@ function Header() {
     if (category === undefined) {
       Category = '';
     };
+
     console.log(Price + ' ' + Search + ' ' + Category);
     dispatch(productSearch(Price, Search, Category, page))
   };
